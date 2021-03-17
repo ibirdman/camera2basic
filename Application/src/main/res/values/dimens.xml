@@ -1,0 +1,4 @@
+<resources>
+    <!-- used for the on-screen icons, e.g., Settings etc -->
+	<dimen name="onscreen_button_size">60dp</dimen>
+</resources>
