@@ -342,7 +342,8 @@ public class Camera2BasicFragment extends Fragment
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
+                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState ||
+                            CaptureResult.CONTROL_AF_STATE_INACTIVE == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null ||
@@ -839,7 +840,6 @@ public class Camera2BasicFragment extends Fragment
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
-        rotation = 1;
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
@@ -939,7 +939,7 @@ public class Camera2BasicFragment extends Fragment
             };
 
             mCaptureSession.stopRepeating();
-            //mCaptureSession.abortCaptures();
+            mCaptureSession.abortCaptures();
             mCaptureSession.capture(captureBuilder.build(), captureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
