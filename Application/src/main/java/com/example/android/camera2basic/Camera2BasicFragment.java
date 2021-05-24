@@ -497,7 +497,7 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+//        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
         mStorageUtils = new StorageUtils(getActivity());
     }
 
@@ -927,6 +927,14 @@ public class Camera2BasicFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
+                    StorageUtils storageUtils = getStorageUtils();
+                    try {
+                        Date current_date = new Date();
+                        mFile = storageUtils.createOutputMediaFile(StorageUtils.MEDIA_TYPE_IMAGE, "", "jpg", current_date);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
                     showToast("Saved: " + mFile);
                     Log.d(TAG, "onCaptureCompleted: " + mFile.toString());
                     unlockFocus();
@@ -1082,14 +1090,16 @@ public class Camera2BasicFragment extends Fragment
             FileOutputStream output = null;
             StorageUtils storageUtils = ((Camera2BasicFragment)mFragment).getStorageUtils();
             try {
-                //output = new FileOutputStream(mFile);
-                Date current_date = new Date();
-                File picFile = storageUtils.createOutputMediaFile(StorageUtils.MEDIA_TYPE_IMAGE, "", "jpg", current_date);
-                output = new FileOutputStream(picFile);
-                output.write(mImageData);
-                storageUtils.broadcastFile(picFile, true, false, true);
-                postUpdateThumbnail();
-                Log.d(TAG, "ImageSaver: picFile: " + picFile.toString());
+/*                Date current_date = new Date();
+                File picFile = storageUtils.createOutputMediaFile(StorageUtils.MEDIA_TYPE_IMAGE, "", "jpg", current_date);*/
+                File picFile = mFile;
+                if (picFile != null) {
+                    output = new FileOutputStream(picFile);
+                    output.write(mImageData);
+                    storageUtils.broadcastFile(picFile, true, false, true);
+                    postUpdateThumbnail();
+                    Log.d(TAG, "ImageSaver: picFile: " + picFile.toString());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

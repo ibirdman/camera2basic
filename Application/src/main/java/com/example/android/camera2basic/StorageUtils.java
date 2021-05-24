@@ -301,7 +301,7 @@ public class StorageUtils {
 
     // only valid if !isUsingSAF()
     String getSaveLocation() {
-        return "smartisan_tv";
+        return "camera2basic";
 /*        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(PreferenceKeys.getSaveLocationPreferenceKey(), "OpenCamera");*/
     }
